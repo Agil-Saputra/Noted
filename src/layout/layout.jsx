@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import all material UI components
 import {
   Drawer,
   Box,
@@ -10,15 +11,26 @@ import {
   Menu,
   AppBar,
   Toolbar,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  ListItemIcon,
+  IconButton,
 } from "@mui/material";
 import CssBaseline from '@mui/material/CssBaseline';
+// import all icons
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
-import { Link } from "react-router-dom";
+// import the router dependencies
+import { useNavigate } from "react-router-dom";
 
 import avatar from "../assets/Group 11.png";
+import { AccountBox, Logout, Note, NotesTwoTone, Search, Settings, Today } from "@mui/icons-material";
+
+
 
 export default function layout({ children }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -30,11 +42,58 @@ export default function layout({ children }) {
     setAnchorEl(null);
 
   };
+  const handleAccount = () => {
+    setAnchorEl(null);
+    navigate("/myaccount");
+  };
 
   const drawerWidth = 240;
 
+  const navigate = useNavigate()
+
+  const icon = {
+    sx : {color: 'primary.main'}
+  }
+
+  const menus = [
+    {
+      title : 'Notes',
+      path: "/",
+      icon: <Note {...icon}/>
+    },
+    {
+      title : 'Todo',
+      path: "/todo",
+      icon: <Today {...icon}/>
+    },
+    {
+      title : 'Create',
+      path: "/create",
+      icon: <AddCircleRoundedIcon {...icon}/>
+    },
+    {
+      title : 'Settings',
+      path: "/settings",
+      icon: <Settings {...icon}/>
+    },
+  ]
+
+  const date = new Date();
+
+  function greet() {
+    if (date.getHours() <= 10){
+     return "Good Morning"
+    }
+    if (date.getHours() <= 18 ){
+     return  "Good Afternoon"
+    } 
+    {
+     return 'Good Evening'
+    }
+  }
+
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", position: 'relative'}}>
       {/* make drawer for links */}
       <Drawer
         anchor="left"
@@ -77,12 +136,44 @@ export default function layout({ children }) {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={handleAccount}>
+            <AccountBox sx={{mr: 1}}/>
+            My account</MenuItem>
+            <MenuItem onClick={handleClose}>
+            <Logout sx={{mr: 1}}/>
+            Logout</MenuItem>
           </Menu>
         </Box>
         <Divider />
-       
+        {/* create link for navigation between pages */}
+        <List>
+
+        {
+          menus.map((menu, i) => (
+            <ListItem disablePadding key={i}>
+              <ListItemButton 
+              onClick={() => navigate(menu.path)}
+              >
+               <ListItemIcon>{menu.icon}</ListItemIcon>
+               <ListItemText>{menu.title}</ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))
+        }
+
+
+          {/* <ListItem disablePadding>
+            <ListItemButton>
+            <ListItemText>
+            <Link to="/">
+
+              Home
+            </Link>
+            </ListItemText>
+            </ListItemButton>
+          </ListItem> */}
+
+      </List>
       </Drawer>
       {/* create top appbar  */}
       <Box sx={{ display: "flex" }}>
@@ -95,14 +186,22 @@ export default function layout({ children }) {
             bgcolor: "#fff",
           }}
         >
+        <Box component="div" sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
           <Toolbar sx={{ flexDirection: "column", alignItems: "start" }}>
             <Typography variant="h5" sx={{ color: "primary.main" }}>
-              Good Morning, Agil!
+              <span>{greet()}</span>, Agil!
             </Typography>
             <Typography variant="subtitle1">Friday, 24 March 2023</Typography>
           </Toolbar>
+    
+          <IconButton>
+            <Search/>
+          </IconButton>
+
+        </Box>
         </AppBar>
-        <Box component="main" sx={{ p: 3 }}>
+
+        <Box component="main" sx={{ p: 3}}>
          <Toolbar/>
          <Box sx={{px: 1, py: 3}}>
          {children}
