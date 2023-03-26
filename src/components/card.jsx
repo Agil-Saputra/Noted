@@ -6,36 +6,56 @@ import {
   Typography,
   Divider,
   Avatar,
-  IconButton
+  IconButton,
 } from "@mui/material";
-import { yellow } from "@mui/material/colors";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { blue, green, red, yellow } from "@mui/material/colors";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-export default function card() {
-  
+import { db } from "../api/client";
+import { doc, deleteDoc } from "firebase/firestore";
+
+export default function card({details, title, category, id}) {
+
+  async function deleteNote(noteId) {
+    const userDoc = doc(db, "Notes", noteId)
+    deleteDoc(userDoc)
+  }
+
+  function color() {
+    if (category == "Work"){
+     return yellow[700]
+    }
+    if (category == "Money" ){
+     return green[700] 
+    } 
+    if (category == "Todo" ){
+     return  red[700]
+    } 
+    {
+     return  blue[700]
+    }
+  }
 
   return (
-    <Card variant="outlined" width={320}>
+    <Card variant="outlined" sx={{minWidth: '220px', maxWidth: '320px'}}>
       <CardHeader
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={title}
+        subheader={category}
         avatar={
-          <Avatar alt="category avatar" sx={{
-            backgroundColor: yellow[700]
-          }}>W</Avatar>}
+          <Avatar alt="category avatar" sx={{backgroundColor: color()}}>
+          {category[0].toUpperCase()}</Avatar>}
           action={
-            <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+              <IconButton aria-label="settings" onClick={() => {
+                  deleteNote(id);
+                }}>
+              <DeleteRoundedIcon/>
+            </IconButton> 
           }
       />
       <Divider />
       <CardContent>
         <Typography variant="subtitle1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quia
-          cupiditate corrupti itaque sapiente esse animi non fugit sit earum
-          ipsam, dolor architecto odio expedita atque voluptas quaerat velit
-          aspernatur.˝
+        {details}
         </Typography>
       </CardContent>
     </Card>
