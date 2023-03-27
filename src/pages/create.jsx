@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from 'react-hook-form';
 import { 
   TextField, 
@@ -9,18 +9,17 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Icon
  } from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../api/client";
+import { categories } from "../api/categories";
 
 import { useNavigate } from "react-router-dom";
 
 export default function create() {
-  const [title, setTitle] = useState('')
-  const [details, setDetails] = useState('')
-  const [category, setCategory] = useState('')
 
   const {
     register,
@@ -44,11 +43,19 @@ export default function create() {
 
 
 
+
+
   return (
-    <Box component="form" onSubmit={handleSubmit((data) =>{
+    <Box
+    component="form" 
+    onSubmit={handleSubmit((data) => {
       createUser(data);
       reset()
-       console.log(data)})}>
+     })}
+     sx={{
+      width: {sm: '70%', xs: '100%'}
+     }}
+     >
       <TextField
         id="outlined-basic"
         label="Add Your Title"
@@ -56,7 +63,7 @@ export default function create() {
         fullWidth
         sx={{ mb: 3 }}
         {...register('title', { required: true })}
-        error={errors.details}
+        error={errors.title}
       />
       <TextField
         id="outlined-basic"
@@ -78,10 +85,23 @@ export default function create() {
             label="Select Your Note Category"
             {...register('category', { required: true })}
             error={errors.category}
+            sx={{
+              '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+                display: 'flex',
+                gap : 2,
+              }
+            }}
           >
           {
-            ['Work', 'Money', 'Todo', 'Others'].map((item, i) => (
-            <MenuItem value={item} key={i}>{item}</MenuItem>
+            categories.map((item, i) => (
+            <MenuItem value={item.title} key={i} sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap : 2
+            }}>
+            <Icon>{item.icon}</Icon>
+            <Typography>{item.title}</Typography>
+            </MenuItem>
             ))
           }
           </Select>
