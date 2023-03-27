@@ -41,10 +41,6 @@ export default function create() {
     });
   };
 
-
-
-
-
   return (
     <Box
     component="form" 
@@ -86,7 +82,7 @@ export default function create() {
             {...register('category', { required: true })}
             error={errors.category}
             sx={{
-              '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+              '& .css-qiwgdb.css-qiwgdb.css-qiwgdb': {
                 display: 'flex',
                 gap : 2,
               }

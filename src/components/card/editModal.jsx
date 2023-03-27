@@ -48,7 +48,6 @@ export default function modal({close, open, id, title, details, category}) {
       updateUser(id, data);
       reset()
       close();
-      console.log(data)
      }) }>
 
       <TextField
@@ -86,7 +85,7 @@ export default function modal({close, open, id, title, details, category}) {
             {...register('NewCategory', { required: true })}
             error={errors.NewCategory}
             sx={{
-              '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+              '& .css-qiwgdb.css-qiwgdb.css-qiwgdb': {
                 display: 'flex',
                 gap : 2,
               }
