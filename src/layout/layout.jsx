@@ -205,7 +205,10 @@ export default function layout({ children }) {
         >
         <Toolbar component="div" sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
 
-            <Typography variant="h5" sx={{ color: "primary.main" }}>
+            <Typography sx={{ 
+              color: "primary.main",
+              fontSize: {xs: "20px", sm: '1.5rem'}
+               }}>
               <span>{greet()}</span>, Agil!
             </Typography>
 
@@ -227,7 +230,7 @@ export default function layout({ children }) {
         </Toolbar>
         </AppBar>
 
-        <Box component="main" sx={{ p: 3, width:'100%'}}>
+        <Box component="main" sx={{ p: {xs: 1, sm: 3 }, width:'100%'}}>
          <Toolbar/>
          <Box sx={{px: 1, py: 3}}>
          {children}
