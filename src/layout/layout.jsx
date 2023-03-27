@@ -20,20 +20,16 @@ import {
 } from "@mui/material";
 import CssBaseline from '@mui/material/CssBaseline';
 // import all icons
-import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
-import HomeIcon from '@mui/icons-material/Home';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-
+import { AccountBox, ArrowDropDownTwoTone, Logout, Note, Search, Settings, Today} from "@mui/icons-material";
+import MenuIcon from '@mui/icons-material/Menu';
 // import the router dependencies
 import { useNavigate } from "react-router-dom";
-
 import avatar from "../assets/Group 11.png";
-import { AccountBox, Logout, Note, NotesTwoTone, Search, Settings, Today } from "@mui/icons-material";
-
-
 
 export default function layout({ children }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,7 +43,12 @@ export default function layout({ children }) {
     navigate("/myaccount");
   };
 
-  const drawerWidth = 240;
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawerWidth = 220;
 
   const navigate = useNavigate()
 
@@ -67,11 +68,6 @@ export default function layout({ children }) {
       icon: <Today {...icon}/>
     },
     {
-      title : 'Create',
-      path: "/create",
-      icon: <AddCircleRoundedIcon {...icon}/>
-    },
-    {
       title : 'Settings',
       path: "/settings",
       icon: <Settings {...icon}/>
@@ -86,29 +82,16 @@ export default function layout({ children }) {
     }
     if (date.getHours() <= 18 ){
      return  "Good Afternoon"
-    } 
+    }
     {
      return 'Good Evening'
     }
   }
 
-  return (
-    <Box sx={{ display: "flex", position: 'relative'}}>
-      {/* make drawer for links */}
-      <Drawer
-        anchor="left"
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        {/* avatar section and menus  */}
-        <Box sx={{ display: "flex", alignItems: "center", }}>
+  const drawer = (
+    <>
+              {/* avatar section and menus  */}
+              <Box sx={{ display: "flex", alignItems: "center", }}>
           <Avatar src={avatar} sx={{m:1 }}/>
           <Typography variant="h6">Agil deltons</Typography>
           <Button
@@ -122,10 +105,11 @@ export default function layout({ children }) {
               px: 0,
               borderRadius: "100px",
               minWidth: "30px",
-              color: "prima",
+              color: 'primary.main',
             }}
           >
-            <ArrowDropDownRoundedIcon fontSize="large"/>
+          <ArrowDropDownTwoTone fontSize="large"/>
+            {/* <ArrowDropDownRoundedIcon fontSize="large"/> */}
           </Button>
           <Menu
             id="basic-menu"
@@ -151,7 +135,7 @@ export default function layout({ children }) {
         {
           menus.map((menu, i) => (
             <ListItem disablePadding key={i}>
-              <ListItemButton 
+              <ListItemButton
               onClick={() => navigate(menu.path)}
               >
                <ListItemIcon>{menu.icon}</ListItemIcon>
@@ -161,47 +145,89 @@ export default function layout({ children }) {
           ))
         }
 
-
-          {/* <ListItem disablePadding>
-            <ListItemButton>
-            <ListItemText>
-            <Link to="/">
-
-              Home
-            </Link>
-            </ListItemText>
-            </ListItemButton>
-          </ListItem> */}
-
       </List>
+    </>
+  )
+
+  return (
+    <Box sx={{ display: "flex", position: 'relative'}}>
+      {/* make drawer for links */}
+      <Drawer
+        anchor="left"
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, 
+        }}
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          display: { xs: 'block', sm: 'none' },
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        
+      >
+      {drawer}
+      </Drawer>
+
+      <Drawer
+      anchor="left"
+      variant="permanent"
+      sx={{
+        width: drawerWidth,
+        display: { xs: 'none', sm: 'block' },
+        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+      }}
+      >
+      {drawer}
       </Drawer>
       {/* create top appbar  */}
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", width:'100%', height:'100%'}}>
         <CssBaseline />
         <AppBar
           component="nav"
           sx={{
-            width: `calc(100% - ${drawerWidth}px)`,
+            width: {
+              xs: '100%',
+              sm: `calc(100% - ${drawerWidth}px)`,
+            },
             p: 1.17,
             bgcolor: "#fff",
+            boxShadow: 'none',
+            borderBottom: 'solid rgba(0, 0, 0, 0.12)',
+            borderBottomWidth: 'thin',
+            position:'absolute'
           }}
         >
-        <Box component="div" sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-          <Toolbar sx={{ flexDirection: "column", alignItems: "start" }}>
+        <Toolbar component="div" sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+
             <Typography variant="h5" sx={{ color: "primary.main" }}>
               <span>{greet()}</span>, Agil!
             </Typography>
-            <Typography variant="subtitle1">Friday, 24 March 2023</Typography>
-          </Toolbar>
-    
+
+        <Box display='flex' alignItems='center' >
           <IconButton>
             <Search/>
           </IconButton>
 
-        </Box>
+          <IconButton
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+            sx={{ display: { sm: 'none' }, color: 'primary.main'}}
+          >
+            <MenuIcon/>
+          </IconButton>
+
+          </Box>
+
+        </Toolbar>
         </AppBar>
 
-        <Box component="main" sx={{ p: 3}}>
+        <Box component="main" sx={{ p: 3, width:'100%'}}>
          <Toolbar/>
          <Box sx={{px: 1, py: 3}}>
          {children}
@@ -211,3 +237,24 @@ export default function layout({ children }) {
     </Box>
   );
 }
+
+
+
+
+// <Drawer
+// container={container}
+// variant="temporary"
+// open={mobileOpen}
+// onClose={handleDrawerToggle}
+// ModalProps={{
+//   keepMounted: true, // Better open performance on mobile.
+// }}
+// sx={{
+//   display: { xs: 'block', sm: 'none' },
+//   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+// }}
+// >
+// {drawer}
+// </Drawer>
+
+

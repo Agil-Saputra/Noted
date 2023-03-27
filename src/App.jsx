@@ -9,6 +9,7 @@ import Settings from "./pages/settings"
 import MyAccount from "./pages/myaccount"
 
 import { ThemeProvider, createTheme } from "@mui/material"
+import { blue, green } from "@mui/material/colors"
 
 function App() {
 
@@ -21,7 +22,7 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: "#329DFF",
+      main: blue[500],
     },
   },
 });
