@@ -20,7 +20,6 @@ export default function home() {
 
     getData();
   }, []);
-  console.log(notes[0]);
 
   return (
     <>
