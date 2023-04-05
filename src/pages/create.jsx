@@ -1,4 +1,5 @@
 import React from "react";
+import Layout from "../layout/layout"
 import { useForm } from 'react-hook-form';
 import { 
   TextField, 
@@ -14,7 +15,7 @@ import {
 import AddBoxIcon from "@mui/icons-material/AddBox";
 
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../api/client";
+import { db } from "../config/client";
 import { categories } from "../api/categories";
 
 import { useNavigate } from "react-router-dom";
@@ -32,7 +33,7 @@ export default function create() {
   const colRef = collection(db, "Notes");
 
   async function createUser ( data)  {
-    navigate("/")
+    navigate("/home")
     // Add a new document with a generated id.
     await addDoc(colRef, {
       title: data.title,
@@ -42,6 +43,7 @@ export default function create() {
   };
 
   return (
+    <Layout>
     <Box
     component="form" 
     onSubmit={handleSubmit((data) => {
@@ -110,5 +112,6 @@ export default function create() {
       
       
     </Box>
+    </Layout>
   );
 }

@@ -1,7 +1,7 @@
-import { Modal, Box, Typography, TextField, Button, FormControl, InputLabel, Select, MenuItem , Icon} from "@mui/material"
+import { Modal, Box, Typography, TextField, Button, FormControl, InputLabel, Select, MenuItem , Icon, Stack} from "@mui/material"
 import { useForm } from 'react-hook-form';
 
-import { db } from "../../api/client";
+import { db } from "../../config/client";
 import { doc, updateDoc } from "firebase/firestore";
 import { categories } from "../../api/categories";
 
@@ -105,9 +105,10 @@ export default function modal({close, open, id, title, details, category}) {
           </Select>
         </FormControl>
 
-      <Button type="submit">Submit Changes</Button>
-      <Button onClick={() => {close()}}>Cancel</Button>
-
+      <Stack spacing={2} direction='row' marginY={1}>
+      <Button type="submit" variant="contained">Submit Changes</Button>
+      <Button onClick={() => {close()}} color="error" variant="contained">Cancel</Button>
+      </Stack>
     </Box>
   </Modal>
   )

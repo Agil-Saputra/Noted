@@ -3,8 +3,9 @@ import Card from "../components/card/card";
 import NoNotes from "../components/noNotes";
 import AddNote from "../components/addNote";
 import Masonry from "react-masonry-css";
-import { db } from "../api/client";
+import { db } from "../config/client";
 import { onSnapshot, collection } from "firebase/firestore";
+import Layout from "../layout/layout"
 
 export default function home() {
   const [notes, setNotes] = useState([]);
@@ -22,7 +23,7 @@ export default function home() {
   }, []);
 
   return (
-    <>
+    <Layout>
       {notes[0] ? (
         <Masonry
           breakpointCols={
@@ -48,6 +49,6 @@ export default function home() {
       ) : (
         <NoNotes />
       )}
-    </>
+    </Layout>
   );
 }

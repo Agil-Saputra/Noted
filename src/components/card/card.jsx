@@ -59,7 +59,7 @@ export default function card({details, title, category, id}) {
           <Typography variant="subtitle1" sx={{fontWeight: '600'}}>{title}</Typography>
         }
         subheader={
-          <Typography variant="subtitel2">{category}</Typography>
+          <Typography variant="subtitel2" fontFamily='poppins'>{category}</Typography>
         }
         avatar={
           <Avatar alt="category avatar" sx={{backgroundColor: color()}}>

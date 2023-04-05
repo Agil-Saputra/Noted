@@ -1,5 +1,5 @@
-import { Modal, Box, Typography, Button, Icon } from "@mui/material";
-import { db } from "../../api/client";
+import { Modal, Box, Typography, Button, Icon, Stack } from "@mui/material";
+import { db } from "../../config/client";
 import { doc, deleteDoc } from "firebase/firestore";
 
 export default function deleteModal({ open, close, id }) {
@@ -30,8 +30,10 @@ export default function deleteModal({ open, close, id }) {
       <Box sx={style} component='div'>
         <Typography>Are you sure Delete this notes?</Typography>
         <Typography>The notes will be Deleted Permanently</Typography>
-        <Button onClick={() => {deleteNote(id)}}>Confirm</Button>
-        <Button onClick={() => {close()}}>Cancel</Button>
+        <Stack spacing={2} direction='row' marginY={1}>
+        <Button onClick={() => {deleteNote(id)}} variant="contained">Confirm</Button>
+        <Button onClick={() => {close()}} color="error" variant="contained">Cancel</Button>
+        </Stack>
       </Box>
     </Modal>
   );
