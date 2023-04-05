@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // import all material UI components
 import {
   Drawer,
@@ -17,49 +17,75 @@ import {
   ListItemButton,
   ListItemIcon,
   IconButton,
+  Stack,
 } from "@mui/material";
-import CssBaseline from '@mui/material/CssBaseline';
 // import all icons
 import { AccountBox, ArrowDropDownTwoTone, Logout, Note, Search, Settings, Today} from "@mui/icons-material";
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import MenuIcon from '@mui/icons-material/Menu';
 // import the router dependencies
 import { useNavigate } from "react-router-dom";
 import avatar from "../assets/Group 11.png";
+// import context from AuthContext
+import { AuthContext } from "../context/authContext";
+// import auth from firebase config 
+import { auth } from "../config/client.js"
+// import SignOut method from firebase 
+import { signOut } from 'firebase/auth'
 
 export default function layout({ children }) {
+  // state for toggle account menu modal 
   const [anchorEl, setAnchorEl] = useState(null);
+    // state for toggle the drawer menu on mobile
   const [mobileOpen, setMobileOpen] = useState(false);
+  // get dispatch function from AuthContext using UseContext for send Payload to change reducer state
+  // get current user from AuthContext for get user data and display it ti user interface
+  const { dispatch, currentUser } =  useContext(AuthContext)
 
+
+  // initializing navigate function
+  const navigate = useNavigate()
+  // declaring width variable for reusable purpose
+  const drawerWidth = 220;
+    // initializing getDate function to get current date
+  const date = new Date();
+
+// function for open account menu modal
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  // function for close account menu modal
   const handleClose = () => {
     setAnchorEl(null);
-
   };
+ // function to navigate to myAccount page
   const handleAccount = () => {
-    setAnchorEl(null);
     navigate("/myaccount");
   };
-
-
+  // function to handle drawer navigation on mobile
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+  // create function to logout user from page
+  const logOut = () => {
+    signOut(auth).then(() => {
+      dispatch({type: "LOGOUT", payload : null})
+      navigate('/')
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 
-  const drawerWidth = 220;
-
-  const navigate = useNavigate()
-
+// declaring icon style variables for reusable components
   const icon = {
     sx : {color: 'primary.main'}
   }
-
+// add array of menu for drawer navigation
   const menus = [
     {
       title : 'Notes',
-      path: "/",
+      path: "/home",
       icon: <Note {...icon}/>
     },
     {
@@ -74,8 +100,8 @@ export default function layout({ children }) {
     },
   ]
 
-  const date = new Date();
-
+  // create a function that will return a value according to 
+  // the time the user used the application
   function greet() {
     if (date.getHours() <= 10){
      return "Good Morning"
@@ -88,12 +114,14 @@ export default function layout({ children }) {
     }
   }
 
+  // declaring drawer components for it can be used 
+  // without to hardcode manually on mobile view
   const drawer = (
     <>
               {/* avatar section and menus  */}
-              <Box sx={{ display: "flex", alignItems: "center", }}>
+              <Box sx={{ display: "flex", alignItems: "center", p: 0 }}>
           <Avatar src={avatar} sx={{m:1 }}/>
-          <Typography variant="h6">Agil deltons</Typography>
+          <Typography variant="subtitle1">Agil deltons</Typography>
           <Button
             id="arrow-button"
             aria-controls={open ? "basic-menu" : undefined}
@@ -109,7 +137,6 @@ export default function layout({ children }) {
             }}
           >
           <ArrowDropDownTwoTone fontSize="large"/>
-            {/* <ArrowDropDownRoundedIcon fontSize="large"/> */}
           </Button>
           <Menu
             id="basic-menu"
@@ -120,12 +147,22 @@ export default function layout({ children }) {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleAccount}>
-            <AccountBox sx={{mr: 1}}/>
-            My account</MenuItem>
-            <MenuItem onClick={handleClose}>
-            <Logout sx={{mr: 1}}/>
-            Logout</MenuItem>
+            <MenuItem onClick={handleAccount} >
+            <ListItemIcon>
+            <AccountBox {...icon}/>
+            </ListItemIcon>
+            <ListItemText>
+            My account
+            </ListItemText>
+            </MenuItem>
+            <MenuItem onClick={logOut}>
+            <ListItemIcon>
+            <Logout  {...icon}/>
+            </ListItemIcon>
+            <ListItemText>
+             Logout
+            </ListItemText>
+            </MenuItem>
           </Menu>
         </Box>
         <Divider />
@@ -186,33 +223,34 @@ export default function layout({ children }) {
       {drawer}
       </Drawer>
       {/* create top appbar  */}
-      <Box sx={{ display: "flex", width:'100%', height:'100%'}}>
-        <CssBaseline />
+      <Box sx={{ width:'100%', height:'100%'}}>
+
         <AppBar
           component="nav"
           sx={{
-            width: {
-              xs: '100%',
-              sm: `calc(100% - ${drawerWidth}px)`,
-            },
-            p: 1.17,
+            width: '100%',
             bgcolor: "#fff",
             boxShadow: 'none',
             borderBottom: 'solid rgba(0, 0, 0, 0.12)',
             borderBottomWidth: 'thin',
-            position:'absolute'
           }}
+          position="sticky"
         >
-        <Toolbar component="div" sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+        <Toolbar component="div" sx={{display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
             <Typography sx={{ 
               color: "primary.main",
-              fontSize: {xs: "20px", sm: '1.5rem'}
+              fontSize: {xs: "13px", sm: '1.5rem'}
                }}>
               <span>{greet()}</span>, Agil!
             </Typography>
 
-        <Box display='flex' alignItems='center' >
+        <Stack direction="row" spacing={2}> 
+
+          <IconButton onClick={() => {navigate('/create')}}>
+          <AddCircleRoundedIcon sx={{color: "primary.main"}}/>
+          </IconButton>
+
           <IconButton>
             <Search/>
           </IconButton>
@@ -225,17 +263,17 @@ export default function layout({ children }) {
             <MenuIcon/>
           </IconButton>
 
-          </Box>
+          </Stack>
 
         </Toolbar>
         </AppBar>
 
-        <Box component="main" sx={{ p: {xs: 1, sm: 3 }, width:'100%'}}>
-         <Toolbar/>
-         <Box sx={{px: 1, py: 3}}>
+        <Box component="main" sx={{ width:'100%', height: '100%'}}>
+         <Box sx={{py: 3, px: 1}}>
          {children}
          </Box>
         </Box>
+        
       </Box>
     </Box>
   );

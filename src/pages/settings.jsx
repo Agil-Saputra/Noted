@@ -1,9 +1,11 @@
 import React from 'react'
 import { Stack, Switch, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import Layout from "../layout/layout"
 
 export default function settings() {
   return (
+    <Layout>
  <Stack spacing={4}>
        <Box display='flex' justifyContent="space-between" gap='1rem' alignItems='center'>
 <Stack>
@@ -20,5 +22,6 @@ export default function settings() {
         <Switch defaultChecked/>
     </Box>
  </Stack>
+ </Layout>
   )
 }
