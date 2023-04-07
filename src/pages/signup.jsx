@@ -8,8 +8,7 @@ import { AuthContext } from "../context/authContext";
 import { Box, TextField, Button, Container, Typography, IconButton, InputAdornment, Link} from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
-
+import logo from "/public/Group 1.svg"
 
 export default function SignUp() {
   const [showPwd, setShowPwd] = useState(false)
@@ -71,14 +70,20 @@ export default function SignUp() {
         mb: '2rem',
         placeSelf: 'start'
       }}>
+         <Box 
+        component="img"
+        src={logo}
+        width={70}
+        height={70}
+      />
       <Typography sx={{
-        fontSize : {xs: '1.6rem', sm: '2rem' }
+        fontSize : {xs: '1.6rem', sm: '2rem', mt: 2 }
       }}>Welcome!</Typography>
       <Typography variant='subtitle2'>Please Register to get unlimited access.</Typography>
       </Box>
 
 
-      {/* <TextField
+      <TextField
         label="Your Username"
         variant="outlined"
         fullWidth
@@ -89,7 +94,7 @@ export default function SignUp() {
         )}
         error={!!errors.username}
         helperText={errors.username && errors.username?.message}
-        /> */}
+        />
 
       <TextField
         label="Your Email"
