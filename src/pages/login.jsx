@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Box, TextField, Button, Container, Typography, Divider, IconButton, InputAdornment, Icon, Link } from '@mui/material'
+import { Box, TextField, Button, Container, Typography, Divider, IconButton, InputAdornment, Icon, Link, Alert } from '@mui/material'
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword , signInWithPopup } from '@firebase/auth'
@@ -8,10 +8,13 @@ import { auth, provider } from '../config/client';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Google from '../assets/logos_google-icon.svg';
+import logo from "/Group 1.svg"
 
 
 export default function login() {
   const [showPwd, setShowPwd] = useState(false)
+  const [errorCode, setErrorCode] = useState('')
+
   const {
     register,
     handleSubmit,
@@ -29,11 +32,30 @@ export default function login() {
        dispatch({type: "LOGIN", payload:user})
      })
      .catch((err) => {
-      //  setError(true)
-      console.log(err);
+       setErrorCode(err.code)
        // ..
      });
   }
+
+  console.log(errorCode);
+
+  function errorHandle() {
+    switch(errorCode){
+      case('auth/user-not-found'): {
+        return <Alert severity="error" sx={{placeSelf: 'start', px: 1, mb : 1, }}>User-not-found! please Login with another Acccount or create new one.</Alert>
+      }
+      case('auth/wrong-password'): {
+        return <Alert severity="error" sx={{placeSelf: 'start', px: 1, mb : 1, }}>Something went Wrong! please Check your Email & Password</Alert>
+      }
+      case ('auth/network-request-failed') : {
+        return <Alert severity="error" sx={{placeSelf: 'start', px: 1, mb : 1, }}>Network Error! please check your internet connection</Alert>
+      }
+      default :{
+       return null
+      }
+    }
+  }
+
 
 
   async function signInWithGoogle() {
@@ -75,7 +97,6 @@ export default function login() {
     }} 
       onSubmit={handleSubmit((data) => {
       signIn(data.email, data.password)
-      reset()
       })}
       >
   
@@ -83,10 +104,18 @@ export default function login() {
         mb: '2rem',
         placeSelf: 'start'
       }}>
-      <Typography variant='h4'>Welcome back!</Typography>
+      <Box 
+        component="img"
+        src={logo}
+        width={70}
+        height={70}
+      />
+      <Typography sx={{mt: 2, fontSize: {xs: '1.6rem', sm: '2.125rem'} }}>Welcome back!</Typography>
       <Typography variant='subtitle2'>Enter to get unlimited access to data & information.</Typography>
       </Box>
-
+      {
+        errorHandle()
+      }
       <TextField
         label="Your Email"
         variant="outlined"

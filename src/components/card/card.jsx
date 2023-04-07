@@ -13,12 +13,8 @@ import { blue, green, red, yellow } from "@mui/material/colors";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
-
-import EditModal from "./editModal";
-import DeleteModal from "./deleteModal";
-
-
-
+import EditModal from "../modal/editModal";
+import DeleteModal from "../modal/deleteModal";
 
 
 export default function card({details, title, category, id}) {
@@ -31,35 +27,51 @@ export default function card({details, title, category, id}) {
   const handleCloseDelete = () => setOpenDelete(false);
 
   function color() {
-    if (category == "Work"){
-     return yellow[700]
-    }
-    if (category == "Money" ){
-     return green[700] 
-    } 
-    if (category == "Todo" ){
-     return  red[700]
-    } 
-    {
-     return  blue[700]
+    switch(category){
+      case('Work'): {
+        return yellow[600]
+      }
+      case('Money'): {
+        return red[700]
+      }
+      case('Others'): {
+        return green[600]
+      }
+      default :{
+       return blue[400]
+      }
     }
   }
 
   const icon = {
-    sx : {color: red[400]}
+    sx : {fontSize: {sm: '1.6rem', xs: '1.2rem'}},
   }
+
 
   return (
     <>
     <EditModal open={open} close={handleClose} id={id} title={title} details={details} category={category}/>
     <DeleteModal open={openDelete} close={handleCloseDelete} id={id}/>
-    <Card variant="outlined" >
-      <CardHeader 
+    <Card variant="outlined" sx={{
+      backgroundColor: color(),
+      overflowWrap : 'break-word',
+      }}>
+      <CardHeader
+        sx={{
+          overflowWrap : 'break-word',
+        }}
         title={
-          <Typography variant="subtitle1" sx={{fontWeight: '600'}}>{title}</Typography>
+          <Typography sx={{
+            fontWeight: '600', 
+            maxWidth : '10ch',
+            fontSize : {xs:'14px', sm: '1rem'}
+            }}>{title}</Typography>
         }
         subheader={
-          <Typography variant="subtitel2" fontFamily='poppins'>{category}</Typography>
+          <Typography sx={{
+            fontSize : {xs:'14px', sm: '1rem'},
+            fontFamily:'poppins',
+          }}>{category}</Typography>
         }
         avatar={
           <Avatar alt="category avatar" sx={{backgroundColor: color()}}>
@@ -67,7 +79,7 @@ export default function card({details, title, category, id}) {
           action={
               <Box>
             <IconButton aria-label="edit" onClick={handleOpen}>
-              <ModeEditIcon />
+              <ModeEditIcon {...icon}/>
             </IconButton>
                 <IconButton aria-label="settings" onClick={handleOpenDelete}>
               <DeleteRoundedIcon {...icon}/>
@@ -76,8 +88,10 @@ export default function card({details, title, category, id}) {
           }
       />
       <Divider />
-      <CardContent>
-        <Typography variant="subtitle1">
+      <CardContent sx={{maxWidth : '40ch'}}>
+        <Typography sx={{
+          fontSize : {xs:'14px', sm: '1rem'}
+        }}>
         {details}
         </Typography>
       </CardContent>

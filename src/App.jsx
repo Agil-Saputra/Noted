@@ -3,16 +3,16 @@ import { Routes, Route } from "react-router-dom";
 
 import Home from "./pages/home";
 import Create from "./pages/create";
-import Todo from "./pages/todo";
+import Kanban from "./pages/kanban";
 import Settings from "./pages/settings";
 import MyAccount from "./pages/myaccount";
 import Login from "./pages/login";
-import SignUp from "./pages/signup";
+import SignUp from "./pages/signUp";
 
 import { ThemeProvider, createTheme } from "@mui/material";
 import { blue, green } from "@mui/material/colors";
 
-import RequireAuth from "./auth/requireAuth";
+import RequireAuth from "./secure/requireAuth";
 
 function App() {
   const theme = createTheme({
@@ -48,10 +48,10 @@ function App() {
           }
         />
         <Route
-          path="todo"
+          path="kanban"
           element={
             <RequireAuth>
-             <Todo />
+             <Kanban />
             </RequireAuth>
           }
         />

@@ -68,7 +68,7 @@ export default function modal({close, open, id, title, details, category}) {
         fullWidth
        defaultValue={details}
         multiline
-        rows={3}
+        rows={5}
         sx={{ mb: 3 }}
         {...register('NewDetails', { required: true })}
         error={errors.NewDetails}
