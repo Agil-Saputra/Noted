@@ -150,7 +150,7 @@ fullWidth
   my: 2,
   fontSize : {xs: '12px', sm: '15px'}
 }}>
-Already have an account? <Link href='/' underline='always'>Login here.</Link>
+Already have an account? <Link href='/' underline='always'>Login here</Link>
 </Typography>
     </Box>
   </Container>
