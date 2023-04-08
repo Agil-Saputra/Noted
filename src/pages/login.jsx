@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Box, TextField, Button, Container, Typography, Divider, IconButton, InputAdornment, Icon, Link, Alert } from '@mui/material'
+import { Box, TextField, Button, Container, Typography, Divider, IconButton, InputAdornment, Icon, Link, Alert, AppBar } from '@mui/material'
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword , signInWithPopup } from '@firebase/auth'
@@ -111,7 +111,7 @@ export default function login() {
         height={70}
       />
       <Typography sx={{mt: 2, fontSize: {xs: '1.6rem', sm: '2.125rem'} }}>Welcome back!</Typography>
-      <Typography variant='subtitle2'>Enter to get unlimited access to data & information.</Typography>
+      <Typography variant='subtitle2'>Enter to Create unlimited notes for your day.</Typography>
       </Box>
       {
         errorHandle()

@@ -15,6 +15,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 import EditModal from "../modal/editModal";
 import DeleteModal from "../modal/deleteModal";
+import { Troubleshoot } from "@mui/icons-material";
 
 
 export default function card({details, title, category, id}) {
@@ -25,6 +26,8 @@ export default function card({details, title, category, id}) {
   const [openDelete, setOpenDelete] = useState(false);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
+
+  const [hovered, setHovered] = useState(false)
 
   function color() {
     switch(category){
@@ -47,14 +50,18 @@ export default function card({details, title, category, id}) {
     sx : {fontSize: {sm: '1.6rem', xs: '1.2rem'}},
   }
 
+  console.log(hovered);
+
 
   return (
     <>
     <EditModal open={open} close={handleClose} id={id} title={title} details={details} category={category}/>
     <DeleteModal open={openDelete} close={handleCloseDelete} id={id}/>
-    <Card variant="outlined" sx={{
+    <Card onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} variant="outlined" sx={{
       backgroundColor: color(),
       overflowWrap : 'break-word',
+      transition: 'all 0.1s ease-in-out',
+
       }}>
       <CardHeader
         sx={{
@@ -77,7 +84,7 @@ export default function card({details, title, category, id}) {
           <Avatar alt="category avatar" sx={{backgroundColor: color()}}>
           {category[0].toUpperCase()}</Avatar>}
           action={
-              <Box>
+              <Box display={hovered ? 'block' : 'none'}>
             <IconButton aria-label="edit" onClick={handleOpen}>
               <ModeEditIcon {...icon}/>
             </IconButton>
